@@ -1,0 +1,13 @@
+Implementation of the snake game with the STM32 micro-controller running with the Miosix kernel.
+
+For this project, the tools and media used are:
+
+-Virtual machine that runs Ubuntu 18.04
+-Qstlink2 in Windows for sending the .bin file to the board
+-Miosix kernel installed on the virtual machine
+-STM32f407 discovery board
+-USB to TTL Serial Cable
+
+With this tools I was capable of doing a customizable version of the snake game,
+running in a terminal in a Linux machine with the TTL wire, writing the 'screen /dev/ttyusb0 19200' command,
+and interactive with the 'w a s d' keys for moving the snake.
