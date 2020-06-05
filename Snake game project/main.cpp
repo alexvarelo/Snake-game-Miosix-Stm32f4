@@ -6,15 +6,15 @@
 #include <termios.h>
 #include <unistd.h>
 
-
 using namespace std;
 using namespace miosix;
 
 
 #define clear() printf("\033[H\033[J")
 
-static Direction direct;
+//static Direction direct;
 
+Direction Snake:: direct;
 
 
 void tty_raw_mode(void)
@@ -43,7 +43,7 @@ Snake::Snake(int _large, int _tall) {
 	appleX = rand() % large;
 	appleY = rand() % tall;
 	score = 0;
-	game_over = false;
+	game_over = 0;
 	direct = Right;
 	score = 1;
 }
@@ -90,7 +90,7 @@ void reset() {
 	printf("\x1b[0m");
 }
 
-bool Snake::get_game_over() {
+int Snake::get_game_over() {
 	return game_over;
 }
 
@@ -146,6 +146,7 @@ void Snake::recogn_key(void *) {
 		int a = getchar();
 		switch (a)
 		{
+		//Snake Direction::direct
 		case 97:
 			direct = Left;
 			break;
@@ -224,12 +225,12 @@ void Snake::movement() {
 
 	//Test if its game over or not
 	if (xpos >= large || xpos == 0 || ypos >= tall || ypos == 0) {
-		game_over = true;
+		game_over = 1;
 	}
 
 	for (int i = 0; i < length; i++) {
 		if (xpos == tail_pos_x[i] && ypos == tail_pos_y[i]) {
-			game_over = true;
+			game_over = 1;
 			break;
 		}
 	}
@@ -268,13 +269,18 @@ int main()
 	tty_raw_mode();
 	snake.board_print();
 	Thread::create(snake.recogn_key,STACK_MIN);
-	while (!snake.get_game_over()) {
+	while (snake.get_game_over()==0) {
 		//snake.recogn_key();
 		snake.movement();
 		fflush(stdout);
 		Thread::sleep(450);
 	}
 	restore_cursor();
-	printf("\n \r Game over!");
-	return 0;
+	printf("\r\nGame over!\n");
+	while(1){
+		ledOn();
+		Thread::sleep(450);
+		ledOff();
+		Thread::sleep(450);
+	}
 }

@@ -18,9 +18,9 @@ private:
 	int tail_pos_y[MAX];
 	int appleX;
 	int appleY;
+	static Direction direct;
+	int game_over;
 	//std::vector <snake> tail;
-	Direction direc;
-	bool game_over;
 public:
 	Snake(int tall, int large);
 	void moveUp(int positions);
@@ -32,7 +32,7 @@ public:
 	static void recogn_key(void *);
 	void movement();
 	void print_movement(int aux_x[], int aux_y[], int current_xpos,int current_ypos);
-	bool get_game_over();
+	int get_game_over();
 };
 
 
